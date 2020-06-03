@@ -6,7 +6,7 @@ import CallKit
 @available(iOS 10.0,*)
 public class SwiftPhonecallstatePlugin: NSObject, FlutterPlugin, CXCallObserverDelegate {
 
-    var callObserver: CXCallObserver?
+    var callObserver: CXCallObserver!
     var _channel: FlutterMethodChannel
 
     public static func register(with registrar: FlutterPluginRegistrar) {
