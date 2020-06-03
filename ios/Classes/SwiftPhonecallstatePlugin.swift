@@ -11,7 +11,7 @@ public class SwiftPhonecallstatePlugin: NSObject, FlutterPlugin, CXCallObserverD
 
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "com.plusdt.phonecallstate", binaryMessenger: registrar.messenger())
-        let instance = SwiftPhonecallstatePlugin(channel:channel)
+        let instance = SwiftPhonecallstatePlugin(channel: channel)
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
 
