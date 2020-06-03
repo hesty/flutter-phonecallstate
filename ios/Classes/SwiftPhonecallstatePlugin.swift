@@ -9,31 +9,15 @@ public class SwiftPhonecallstatePlugin: NSObject, FlutterPlugin, CXCallObserverD
     var callObserver: CXCallObserver!
     var _channel: FlutterMethodChannel
 
-    var testTimer: Timer?
-    var counter = 0
-
-
     public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "com.plusdt.phonecallstate", binaryMessenger: registrar.messenger())
-    let instance = SwiftPhonecallstatePlugin(channel:channel)
-    registrar.addMethodCallDelegate(instance, channel: channel)
-
-
+        let channel = FlutterMethodChannel(name: "com.plusdt.phonecallstate", binaryMessenger: registrar.messenger())
+        let instance = SwiftPhonecallstatePlugin(channel:channel)
+        registrar.addMethodCallDelegate(instance, channel: channel)
     }
 
-    init(channel:FlutterMethodChannel){
-        super.init()
-        _channel = channel
-
+    init(channel: FlutterMethodChannel){
+        self._channel = channel;
         setupCallObserver()
-    }
-
-
-    @objc func timerAction() {
-        counter += 1
-        _channel.invokeMethod("phone.incoming", arguments: nil)
-        print("Timer!")
-        //testTimer.invalidate()
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -41,22 +25,17 @@ public class SwiftPhonecallstatePlugin: NSObject, FlutterPlugin, CXCallObserverD
 
         switch (call.method) {
             case "phoneTest.PhoneIncoming":
-                var testTimer = Timer.scheduledTimer(timeInterval: call.arguments as! Double,
-                                target: self,
-                                selector: #selector(SwiftPhonecallstatePlugin.timerAction),
-                                userInfo: nil,
-                                repeats: true)
-        default:
-            result(FlutterMethodNotImplemented)
+                print("phoneIncoming Test implementation");
+                result(1);
+            default:
+                result(FlutterMethodNotImplemented)
         }
-
-        result(1)
     }
 
     @available(iOS 10.0,*)
     func setupCallObserver(){
-            callObserver = CXCallObserver()
-            callObserver.setDelegate(self, queue: nil)
+        callObserver = CXCallObserver()
+        callObserver.setDelegate(self, queue: nil)
     }
 
 
