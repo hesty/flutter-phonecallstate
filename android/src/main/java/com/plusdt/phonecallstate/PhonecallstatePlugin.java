@@ -1,6 +1,8 @@
 package com.plusdt.phonecallstate;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Intent;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.content.Context;
 import android.content.Context;
 
 import android.app.Activity;
+
 import io.flutter.app.FlutterActivity;
 
 import io.flutter.plugin.common.MethodChannel;
@@ -24,73 +27,75 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 /**
  * PhonecallstatePlugin
  */
-public class PhonecallstatePlugin implements MethodCallHandler {
-  private final MethodChannel channel;
-  private Activity activity;
-  private static final String TAG = "KORDON";//MyClass.class.getSimpleName();
+public class PhonecallstatePlugin extends BroadcastReceiver implements MethodCallHandler {
+    private final MethodChannel channel;
+    private Activity activity;
+    private static final String TAG = "KORDON";//MyClass.class.getSimpleName();
 
-  TelephonyManager tm;
-  String incomingCallNumber = "";
+    TelephonyManager tm;
+    String incomingCallNumber = "";
 
-  //private PhoneStateListener mPhoneListener;
+    //private PhoneStateListener mPhoneListener;
 
-  /**
-   * Plugin registration.
-   */
-  public static void registerWith(Registrar registrar) {
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "com.plusdt.phonecallstate");
-    channel.setMethodCallHandler(new PhonecallstatePlugin(registrar.activity(), channel));
-  }
-
-
-
-  PhonecallstatePlugin(Activity activity, MethodChannel channel) {
-    this.activity = activity;
-    this.channel = channel;
-    this.channel.setMethodCallHandler(this);
-
-    TelephonyManager tm = (TelephonyManager) this.activity.getSystemService(Context.TELEPHONY_SERVICE);
-    tm.listen(mPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
-
-  }
-
- 
-
-  
-  @Override
-  public void onMethodCall(MethodCall call, MethodChannel.Result response) {
-    if (call.method.equals("phoneTest.PhoneIncoming")) {
-        Log.i(TAG,"phoneIncoming Test implementation");
-      // TODO: test mode with seconds to wait as parameter
-    }else {
-      response.notImplemented();
+    /**
+     * Plugin registration.
+     */
+    public static void registerWith(Registrar registrar) {
+        final MethodChannel channel = new MethodChannel(registrar.messenger(), "com.plusdt.phonecallstate");
+        channel.setMethodCallHandler(new PhonecallstatePlugin(registrar.activity(), channel));
     }
 
-  }
+
+    PhonecallstatePlugin(Activity activity, MethodChannel channel) {
+        this.activity = activity;
+        this.channel = channel;
+        this.channel.setMethodCallHandler(this);
+
+        TelephonyManager tm = (TelephonyManager) this.activity.getSystemService(Context.TELEPHONY_SERVICE);
+        tm.listen(mPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+
+    }
 
 
-  private PhoneStateListener mPhoneListener = new PhoneStateListener() {
-    public void onCallStateChanged(int state, String incomingNumber) {
-      try {
-        switch (state) {
-          case TelephonyManager.CALL_STATE_IDLE:
-            channel.invokeMethod("phone.disconnected", incomingNumber);
-            break;
-          case TelephonyManager.CALL_STATE_RINGING:
-            channel.invokeMethod("phone.incoming", incomingNumber);
-            break;
-          case TelephonyManager.CALL_STATE_OFFHOOK:
-            channel.invokeMethod("phone.connected", incomingNumber);
-            break;
-
-          default:
-            Log.d(TAG, "Unknown phone state=" + String.valueOf(state));
+    @Override
+    public void onMethodCall(MethodCall call, MethodChannel.Result response) {
+        if (call.method.equals("phoneTest.PhoneIncoming")) {
+            Log.i(TAG, "phoneIncoming Test implementation");
+            // TODO: test mode with seconds to wait as parameter
+        } else {
+            response.notImplemented();
         }
-      } catch (Exception e) {
-        Log.e("TAG","Exception");
-      }
+
     }
-  };
 
 
+    private PhoneStateListener mPhoneListener = new PhoneStateListener() {
+        public void onCallStateChanged(int state, String incomingNumber) {
+            try {
+                switch (state) {
+                    case TelephonyManager.CALL_STATE_IDLE:
+                        channel.invokeMethod("phone.disconnected", incomingNumber);
+                        break;
+                    case TelephonyManager.CALL_STATE_RINGING:
+                        channel.invokeMethod("phone.incoming", incomingNumber);
+                        break;
+                    case TelephonyManager.CALL_STATE_OFFHOOK:
+                        channel.invokeMethod("phone.connected", incomingNumber);
+                        break;
+
+                    default:
+                        Log.d(TAG, "Unknown phone state=" + String.valueOf(state));
+                }
+            } catch (Exception e) {
+                Log.e("TAG", "Exception");
+            }
+        }
+    };
+
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        TelephonyManager telephony = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        telephony.listen(mPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+    }
 }
