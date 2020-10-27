@@ -1,22 +1,20 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
-
-
 typedef void ErrorHandler(String message);
-// typedef void incomingHandler(String incomingCallNumber);
 
+
+// TODO need to implement in IOS
 class Phonecallstate {
   static const MethodChannel _channel =
       const MethodChannel('com.plusdt.phonecallstate');
 
   
   Function incomingHandler;
-  VoidCallback dialingHandler;
-  VoidCallback connectedHandler;
-  VoidCallback disconnectedHandler;
+  Function dialingHandler;
+  Function connectedHandler;
+  Function disconnectedHandler;
   ErrorHandler errorHandler;
 
 
@@ -29,13 +27,13 @@ class Phonecallstate {
   void setIncomingHandler(Function callback) {
     incomingHandler = callback;
   }
-  void setDialingHandler(VoidCallback callback) {
+  void setDialingHandler(Function callback) {
     dialingHandler = callback;
   }
-  void setConnectedHandler(VoidCallback callback) {
+  void setConnectedHandler(Function callback) {
     connectedHandler = callback;
   }
-  void setDisconnectedHandler(VoidCallback callback) {
+  void setDisconnectedHandler(Function callback) {
     disconnectedHandler = callback;
   }
 
@@ -56,19 +54,19 @@ class Phonecallstate {
       case "phone.dialing":
         //print("dialing");
         if (dialingHandler != null) {
-          dialingHandler();
+          dialingHandler(call.arguments);
         }
         break;
       case "phone.connected":
         //print("connected");
         if (connectedHandler != null) {
-          connectedHandler();
+          connectedHandler(call.arguments);
         }
         break;
       case "phone.disconnected":
         //print("disconnected");
         if (disconnectedHandler != null) {
-          disconnectedHandler();
+          disconnectedHandler(call.arguments);
         }
         break;
       case "phone.onError":

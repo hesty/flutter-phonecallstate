@@ -74,18 +74,13 @@ public class PhonecallstatePlugin implements MethodCallHandler {
       try {
         switch (state) {
           case TelephonyManager.CALL_STATE_IDLE:
-            channel.invokeMethod("phone.disconnected", true);
-           
+            channel.invokeMethod("phone.disconnected", incomingNumber);
             break;
           case TelephonyManager.CALL_STATE_RINGING:
-            
-           
             channel.invokeMethod("phone.incoming", incomingNumber);
-            
-            
             break;
           case TelephonyManager.CALL_STATE_OFFHOOK:
-            channel.invokeMethod("phone.connected", true);
+            channel.invokeMethod("phone.connected", incomingNumber);
             break;
 
           default:
