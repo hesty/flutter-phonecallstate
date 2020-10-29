@@ -14,7 +14,7 @@ enum PhonecallStateError { notimplementedyet  }
 
 class _MyAppState extends State<MyApp> {
 
-  Phonecallstate  phonecallstate;
+  PhoneCallState  phonecallstate;
   PhonecallState phonecallstatus;
   
 
@@ -29,7 +29,7 @@ class _MyAppState extends State<MyApp> {
   void initPhonecallstate() async {
     print("Phonecallstate init");
 
-    phonecallstate = new Phonecallstate();
+    phonecallstate = new PhoneCallState();
     phonecallstatus = PhonecallState.none;
 
 
