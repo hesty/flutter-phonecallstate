@@ -4,7 +4,7 @@ Flutter plugin to receive Phone Call State for both iOS and Android.
 
 Update:
 - Modified pubspec.yaml file to Dart2+
-- Named version as 1.0.1
+- Named version as 1.0.2
 
 
 ```
@@ -16,33 +16,33 @@ enum PhonecallStateError { notimplementedyet  }
   PhonecallState phonecallstatus;
   
 ...
-
-phonecallstate = new Phonecallstate();
+  Future<CallService> init() async {
+    phonecallstate = await PhoneCallState().Instance();
     phonecallstatus = PhonecallState.none;
 
 
-    phonecallstate.setIncomingHandler(() {
+    phonecallstate.setIncomingHandler((number) {
       setState(() {
         phonecallstatus = PhonecallState.incoming;
         phonecallstatuslog =  phonecallstatuslog.toString() + PhonecallState.incoming.toString()+"\n";
       });
     });
 
-    phonecallstate.setDialingHandler(() {
+    phonecallstate.setDialingHandler((number) {
       setState(() {
         phonecallstatus = PhonecallState.dialing;
         phonecallstatuslog =  phonecallstatuslog.toString() + PhonecallState.dialing.toString()+"\n";
       });
     });
 
-    phonecallstate.setConnectedHandler(() {
+    phonecallstate.setConnectedHandler((number) {
       setState(() {
         phonecallstatus = PhonecallState.connected;
         phonecallstatuslog =  phonecallstatuslog.toString() + PhonecallState.connected.toString()+"\n";
       });
     });
 
-    phonecallstate.setDisconnectedHandler(() {
+    phonecallstate.setDisconnectedHandler((number) {
       setState(() {
         phonecallstatus = PhonecallState.disconnected;
         phonecallstatuslog =  phonecallstatuslog.toString() + PhonecallState.disconnected.toString()+"\n";
@@ -50,6 +50,9 @@ phonecallstate = new Phonecallstate();
     });
 
     phonecallstate.setErrorHandler((msg) {
-
+          print('Call Error: $msg');
     });
+   }
+
+
     ```

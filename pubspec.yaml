@@ -1,4 +1,4 @@
-name: phonecallstate_kin
+name: phonecallstate
 description: Flutter plugin to receive Phone Call State for both iOS and Android. With phone number as args, both for incoming and outcoming calls.
 version: 1.0.2
 authors: [Özcan Esnaf <ozcan.esnaf@gmail.com>, Yerassyl Maikhanov <maihanov96@gmail.com>, 韩雷 <hanlei9257@163.com>]
@@ -11,8 +11,3 @@ dependencies:
   flutter:
     sdk: flutter
   permission_handler: ^5.0.1+1
-
-flutter:
-  plugin:
-    androidPackage: com.plusdt.phonecallstate
-    pluginClass: PhonecallstatePlugin
