@@ -5,17 +5,17 @@ import 'dart:developer' as developer;
 
 import 'package:permission_handler/permission_handler.dart';
 
-typedef void ErrorHandler(String message);
+typedef void ErrorHandler(String? message);
 
 // TODO need to implement in IOS
 class PhoneCallState {
   static const MethodChannel _channel = const MethodChannel('com.plusdt.phonecallstate');
 
-  Function incomingHandler;
-  Function dialingHandler;
-  Function connectedHandler;
-  Function disconnectedHandler;
-  ErrorHandler errorHandler;
+  Function? incomingHandler;
+  Function? dialingHandler;
+  Function? connectedHandler;
+  Function? disconnectedHandler;
+  ErrorHandler? errorHandler;
 
   Future<PhoneCallState> Instance() async {
     _channel.setMethodCallHandler(platformCallHandler);
@@ -55,31 +55,31 @@ class PhoneCallState {
       case 'phone.incoming':
         developer.log('PhoneCallState: incoming. ${call.method} ${call.arguments}', name: 'PSC');
         if (incomingHandler != null) {
-          incomingHandler(call.arguments);
+          incomingHandler!(call.arguments);
         }
         break;
       case 'phone.dialing':
         developer.log('PhoneCallState: dialing. ${call.method} ${call.arguments}', name: 'PSC');
         if (dialingHandler != null) {
-          dialingHandler(call.arguments);
+          dialingHandler!(call.arguments);
         }
         break;
       case 'phone.connected':
         developer.log('PhoneCallState: connected. ${call.method} ${call.arguments}', name: 'PSC');
         if (connectedHandler != null) {
-          connectedHandler(call.arguments);
+          connectedHandler!(call.arguments);
         }
         break;
       case 'phone.disconnected':
         developer.log('PhoneCallState: disconnected. ${call.method} ${call.arguments}', name: 'PSC');
         if (disconnectedHandler != null) {
-          disconnectedHandler(call.arguments);
+          disconnectedHandler!(call.arguments);
         }
         break;
       case 'phone.onError':
         developer.log('PhoneCallState: error. ${call.method} ${call.arguments}', name: 'PSC');
         if (errorHandler != null) {
-          errorHandler(call.arguments);
+          errorHandler!(call.arguments);
         }
         break;
       default:
