@@ -14,8 +14,8 @@ enum PhonecallStateError { notimplementedyet  }
 
 class _MyAppState extends State<MyApp> {
 
-  PhoneCallState  phonecallstate;
-  PhonecallState phonecallstatus;
+  late PhoneCallState  phonecallstate;
+  PhonecallState? phonecallstatus;
   
 
   var  phonecallstatuslog;
